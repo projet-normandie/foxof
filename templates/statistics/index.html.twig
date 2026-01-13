@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Statistique des jeux - Foxof{% endblock %}
+
+{% block body %}
+<div class="container py-5">
+    <header class="text-center mb-5">
+        <h1 class="mb-3">Statistique des jeux</h1>
+        <p class="text-muted">
+            <a href="{{ path('app_home') }}" class="text-decoration-none">retour</a>
+        </p>
+    </header>
+
+    <div class="mx-auto" style="max-width: 1280px;">
+        <table class="table table-hover table-striped" style="width: 1280px;">
+            <thead class="table-primary">
+                <tr>
+                    <th scope="col" class="ps-4 pe-3 py-3">Année</th>
+                    <th scope="col" class="px-3 py-3">Nombre</th>
+                    <th scope="col" class="px-3 py-3">Jeux de l'année</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for stat in yearStats %}
+                    <tr>
+                        <td class="ps-4 pe-3 py-3 text-nowrap">
+                            <span class="fw-bold">{{ stat.year }}</span>
+                        </td>
+                        <td class="px-3 py-3 text-nowrap">
+                            {{ stat.total }}
+                        </td>
+                        <td class="px-3 py-3">
+                            <div class="d-flex gap-2 flex-wrap">
+                                {% for game in stat.gamesOfTheYear %}
+                                    {% if game.picture %}
+                                        <img src="{{ game.picture }}"
+                                             alt="{{ game.name }}"
+                                             title="{{ game.name }}"
+                                             class="rounded"
+                                             loading="lazy">
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

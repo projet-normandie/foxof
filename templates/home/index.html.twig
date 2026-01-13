@@ -1,0 +1,82 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Foxof - Collection de Jeux Vidéo Terminés{% endblock %}
+
+{% block meta_description %}Découvrez la collection complète des jeux vidéo terminés par Foxof. Liste détaillée avec plateformes, dates de complétion et statistiques de jeu.{% endblock %}
+
+{% block meta_keywords %}foxof, jeux terminés, collection jeux vidéo, gaming, completionist, plateformes gaming, liste jeux complétés{% endblock %}
+
+{% block og_title %}Foxof - Ma Collection de Jeux Vidéo Terminés{% endblock %}
+
+{% block og_description %}Collection personnelle de jeux vidéo terminés avec plateformes, dates de complétion et statistiques détaillées.{% endblock %}
+
+{% block structured_data %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": "Collection de Jeux Vidéo Terminés - Foxof",
+  "description": "Collection personnelle de jeux vidéo terminés par Foxof avec informations détaillées sur les plateformes et dates de complétion",
+  "url": "{{ app.request.schemeAndHttpHost }}{{ path('app_home') }}",
+  "author": {
+    "@type": "Person",
+    "name": "Foxof"
+  },
+  "inLanguage": "fr-FR",
+  "dateModified": "{{ 'now'|date('c') }}"
+}
+</script>
+{% endblock %}
+
+{% block body %}
+<div class="container py-5">
+    <header class="text-center mb-5">
+        <h1 class="mb-3">Jeux finis</h1>
+        <p class="text-muted">Par Foxof - {{ games|length }} jeu{{ games|length > 1 ? 'x' : '' }} terminé{{ games|length > 1 ? 's' : '' }}</p>
+    </header>
+
+    <div class="mx-auto" style="max-width: 1280px;">
+        <table class="table table-hover table-striped" style="width: 1280px;" itemscope itemtype="https://schema.org/ItemList">
+            <caption class="visually-hidden">Liste des jeux vidéo terminés</caption>
+            <thead class="table-primary">
+                <tr>
+                    <th scope="col" class="ps-4 pe-3 py-3"></th>
+                    <th scope="col" class="px-3 py-3">Titre</th>
+                    <th scope="col" class="px-3 py-3">Console</th>
+                    <th scope="col" class="px-3 py-3">Date</th>
+                    <th scope="col" class="px-3 py-3 text-center">1st</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for game in games %}
+                    <tr itemprop="itemListElement" itemscope itemtype="https://schema.org/VideoGame">
+                        <td class="ps-4 pe-3 py-3">
+                            {% if game.picture %}
+                                <img src="{{ game.picture }}" alt="Jaquette de {{ game.name }}" class="rounded" itemprop="image" loading="lazy">
+                            {% else %}
+                                <span class="text-muted small">N/A</span>
+                            {% endif %}
+                        </td>
+                        <td class="px-3 py-3">
+                            <span class="fw-bold" itemprop="name">{{ game.name }}</span>
+                        </td>
+                        <td class="px-3 py-3">
+                            <span itemprop="gamePlatform">{{ game.platform.name }}</span>
+                        </td>
+                        <td class="px-3 py-3 text-nowrap">
+                            {% if game.finishedAt %}
+                                <time datetime="{{ game.finishedAt|date('Y-m-d') }}">{{ game.finishedAt|date('d/m/Y') }}</time>
+                            {% else %}
+                                <span class="text-muted">-</span>
+                            {% endif %}
+                        </td>
+                        <td class="px-3 py-3 text-nowrap text-center">
+                            <span class="fw-semibold">{{ game.finishedTimes }}</span>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
